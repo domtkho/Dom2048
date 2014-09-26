@@ -1,28 +1,19 @@
-body {
-  text-align: center;
-}
-
-
-h1 {
-  font-family: arial;
-  font-size: 54px;
-  color: #009ACE;
-}
-
-div.board {
-  width: 500px;
-  height: 500px;
-  background: blue;
-  display: inline-block;
-  margin: auto 0;
-  border: 10px solid red;
-}
-
 div.cell {
-  height: 120px;
-  width: 120px;
-  background: yellow;
-  border: 1px solid black;
-  display: block;
+  height: 150px;
+  width: 25%;
   float: left;
+  background: #009ACE;
+  border: 5px solid #5D5D5D;
+  text-align: center;
+  line-height: 130px;
+  padding: 0;
+}
+
+div.tile {
+  background: yellow;
+  width: 80%;
+  height: 120px;
+  margin: 0 auto;
+  margin-top: 10px;
+  border-radius: 10px;
 }
