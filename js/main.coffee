@@ -22,7 +22,6 @@ buildBoard = ->
 generateTile = (board) ->
   value = randomValue()
   [row, column] = randomCellIndicies()
-  console.log "Tile location: #{row} | #{column}"
   if board[row][column] is 0
     board[row][column] = value
   else
@@ -32,7 +31,6 @@ showBoard = (board) ->
   for row in [0..3]
     for col in [0..3]
       $(".r#{row}.c#{col} > div").html(board[row][col])
-  console.log "show board"
 
 printArray = (array) ->
   console.log "--- Start ---"
@@ -40,14 +38,23 @@ printArray = (array) ->
     console.log row
   console.log "--- End ---"
 
+
+move = (board, direction) ->
+  for i in [0..3]
+    if direction == 'right' or  'left'
+      row = getRow(i, board)
+      row = mergeCells(row, direction)
+      row = collapseCells(row, direction)
+      console.log row
+
 getRow = (r, board) ->
   [board[r][0], board[r][1], board[r][2], board[r][3]]
 
 mergeCells = (row, direction) ->
+
   if direction is 'right'
     for a in [3...0]
       for b in [a-1..0]
-        console.log a, b
 
         if row[a] is 0 then break
         else if row[a] == row[b]
@@ -59,16 +66,19 @@ mergeCells = (row, direction) ->
 
 console.log mergeCells [4,4,4,4], 'right'
 
-collapseCells = ->
-  console.log 'collapse cells'
+collapseCells = (row, direction) ->
+  row = row.filter (ele) -> ele isnt 0
+  if direction is 'right'
+    while row.length < 4
+      row.unshift 0
+  else if direction is 'left'
+    while row.length < 4
+      row.push 0
+  row
 
-move = (board, direction) ->
+console.log collapseCells [0,4,4,0], 'right'
 
-  for i in [0..3]
-    if direction == 'right'
-      row = getRow(i, board)
-      mergeCells(row, direction)
-      collapseCells()
+
 
 $ ->
   @board = buildBoard()
@@ -78,11 +88,11 @@ $ ->
   showBoard(@board)
 
   $('body').keydown (e) =>
-    # e.preventDefault()
     key = e.which
     keys = [37..40]
 
     if key in keys
+      e.preventDefault()
       direction = switch key
         when 37 then 'left'
         when 38 then 'up'
@@ -93,8 +103,7 @@ $ ->
       # try moving
       move(@board, direction)
       # check move validity
-    else
-      #
+
 
 
 
