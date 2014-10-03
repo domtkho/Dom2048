@@ -11,14 +11,6 @@ randomValue = ->
 buildBoard = ->
   [0..3].map -> [0..3].map -> 0
 
-# buildBoardSlow = ->
-#   board = []
-#   for row in [0..3]
-#     board[row] = []
-#     for col in [0..3]
-#       board[row][col] = 0
-#   board
-
 generateTile = (board) ->
   value = randomValue()
   [row, column] = randomCellIndicies()
@@ -38,7 +30,6 @@ move = (board, direction) ->
 
   newBoard
 
-
 getRow = (r, board) ->
   [board[r][0], board[r][1], board[r][2], board[r][3]]
 
@@ -57,9 +48,18 @@ mergeCells = (row, direction) ->
           row[b] = 0
           break
         else if row[b] isnt 0 then break
-  row
 
-# console.log mergeCells [4,4,4,4], 'right'
+  else if direction is 'left'
+    for a in [0...3]
+      for b in [a+1..3]
+
+        if row[a] is 0 then break
+        else if row[a] == row[b]
+          row[a] *= 2
+          row[b] = 0
+          break
+        else if row[b] isnt 0 then break
+  row
 
 collapseCells = (row, direction) ->
   row = row.filter (ele) -> ele isnt 0
@@ -71,14 +71,28 @@ collapseCells = (row, direction) ->
       row.push 0
   row
 
-# console.log collapseCells [0,4,4,0], 'right'
-
 moveIsValid = (originalBoard, newBoard) ->
   for row in [0..3]
     for col in [0..3]
       if originalBoard[row][col] isnt newBoard[row][col]
         return true
   false
+
+boardIsFull = (board) ->
+  for row in board
+    if 0 in row
+      return false
+  true
+
+noValidMove = (board) ->
+  direction = 'right' #FIXME: Handle other directions
+  newBoard = move(board, direction)
+  if moveIsValid(board, newBoard)
+    return false
+  true
+
+isGameOver = (board) ->
+  boardIsFull(board) and noValidMove(board)
 
 showBoard = (board) ->
   for row in [0..3]
@@ -115,11 +129,20 @@ $ ->
       # try moving
       newBoard = move(@board, direction)
       printArray newBoard
+      # check the move validity, by comparing the original and new board
       if moveIsValid(@board, newBoard)
         console.log "Valid"
         @board = newBoard
+        # generate tile
         generateTile(@board)
         showBoard(@board)
+        #check game lost
+        if isGameOver(@board)
+          console.log "YOU LOSE"
+        else
+          # show board
+          showBoard(@board)
+
       else
         console.log "Invalid"
 
