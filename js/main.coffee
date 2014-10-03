@@ -27,28 +27,23 @@ generateTile = (board) ->
   else
     generateTile(board)
 
-showBoard = (board) ->
-  for row in [0..3]
-    for col in [0..3]
-      $(".r#{row}.c#{col} > div").html(board[row][col])
-
-printArray = (array) ->
-  console.log "--- Start ---"
-  for row in array
-    console.log row
-  console.log "--- End ---"
-
-
 move = (board, direction) ->
+  newBoard = buildBoard()
   for i in [0..3]
-    if direction == 'right' or  'left'
+    if direction == 'right' or 'left'
       row = getRow(i, board)
       row = mergeCells(row, direction)
       row = collapseCells(row, direction)
-      console.log row
+      setRow(row, i , newBoard)
+
+  newBoard
+
 
 getRow = (r, board) ->
   [board[r][0], board[r][1], board[r][2], board[r][3]]
+
+setRow = (row, index, board) ->
+  board[index] = row
 
 mergeCells = (row, direction) ->
 
@@ -64,7 +59,7 @@ mergeCells = (row, direction) ->
         else if row[b] isnt 0 then break
   row
 
-console.log mergeCells [4,4,4,4], 'right'
+# console.log mergeCells [4,4,4,4], 'right'
 
 collapseCells = (row, direction) ->
   row = row.filter (ele) -> ele isnt 0
@@ -76,8 +71,25 @@ collapseCells = (row, direction) ->
       row.push 0
   row
 
-console.log collapseCells [0,4,4,0], 'right'
+# console.log collapseCells [0,4,4,0], 'right'
 
+moveIsValid = (originalBoard, newBoard) ->
+  for row in [0..3]
+    for col in [0..3]
+      if originalBoard[row][col] isnt newBoard[row][col]
+        return true
+  false
+
+showBoard = (board) ->
+  for row in [0..3]
+    for col in [0..3]
+      $(".r#{row}.c#{col} > div").html(board[row][col])
+
+printArray = (array) ->
+  console.log "--- Start ---"
+  for row in array
+    console.log row
+  console.log "--- End ---"
 
 
 $ ->
@@ -101,8 +113,20 @@ $ ->
       console.log direction
 
       # try moving
-      move(@board, direction)
-      # check move validity
+      newBoard = move(@board, direction)
+      printArray newBoard
+      if moveIsValid(@board, newBoard)
+        console.log "Valid"
+        @board = newBoard
+        generateTile(@board)
+        showBoard(@board)
+      else
+        console.log "Invalid"
+
+
+      # check move validity, by comparing the original and new board
+
+
 
 
 
