@@ -22,12 +22,12 @@ generateTile = (board) ->
 move = (board, direction) ->
   newBoard = buildBoard()
   for i in [0..3]
-    if direction is 'right' or direction is 'left'
+    if direction in ['right', 'left']
       row = getRow(i, board)
       row = mergeCells(row, direction)
       row = collapseCells(row, direction)
       setRow(row, i, newBoard)
-    else if direction is 'up' or direction is 'down'
+    else if direction in ['up', 'down']
       column = getCol(i, board)
       column = mergeCells(column, direction)
       column = collapseCells(column, direction)
@@ -62,17 +62,17 @@ mergeCells = (cell, direction) ->
         else if cell[b] isnt 0 then break
     cell
 
-  if direction is 'right' or direction is 'down'
+  if direction in ['right', 'down']
     merge cell
-  else if direction is 'left' or direction is 'up'
+  else if direction in ['left', 'up']
     merge(cell.reverse()).reverse()
 
 collapseCells = (cell, direction) ->
   cell = cell.filter (ele) -> ele isnt 0
   while cell.length < 4
-    if direction is 'right' or direction is 'down'
+    if direction in ['right', 'down']
       cell.unshift 0
-    else if direction is 'left' or direction is 'up'
+    else if direction in ['left', 'up']
       cell.push 0
   cell
 
@@ -90,7 +90,8 @@ boardIsFull = (board) ->
   true
 
 noValidMove = (board) ->
-  newBoard = move(board, direction)
+  for direction in ['up', 'down', 'left', 'right']
+    newBoard = move(board, direction)
   if moveIsValid(board, newBoard)
     return false
   true
@@ -149,6 +150,7 @@ $ ->
         else
           # show board
           showBoard(@board)
+
       else
         console.log "Invalid"
 
