@@ -38,7 +38,7 @@ setRow = (row, index, board) ->
 
 mergeCells = (row, direction) ->
 
-  if direction is 'right'
+  merge = (row) ->
     for a in [3...0]
       for b in [a-1..0]
 
@@ -48,18 +48,12 @@ mergeCells = (row, direction) ->
           row[b] = 0
           break
         else if row[b] isnt 0 then break
+    row
 
+  if direction is 'right'
+    merge row
   else if direction is 'left'
-    for a in [0...3]
-      for b in [a+1..3]
-
-        if row[a] is 0 then break
-        else if row[a] == row[b]
-          row[a] *= 2
-          row[b] = 0
-          break
-        else if row[b] isnt 0 then break
-  row
+    merge(row.reverse()).reverse()
 
 collapseCells = (row, direction) ->
   row = row.filter (ele) -> ele isnt 0
@@ -97,7 +91,10 @@ isGameOver = (board) ->
 showBoard = (board) ->
   for row in [0..3]
     for col in [0..3]
-      $(".r#{row}.c#{col} > div").html(board[row][col])
+      if board[row][col] is 0
+        $(".r#{row}.c#{col} > div").html("")
+      else
+        $(".r#{row}.c#{col} > div").html(board[row][col])
 
 printArray = (array) ->
   console.log "--- Start ---"
