@@ -22,11 +22,16 @@ generateTile = (board) ->
 move = (board, direction) ->
   newBoard = buildBoard()
   for i in [0..3]
-    if direction == 'right' or 'left'
+    if direction is 'right' or direction is 'left'
       row = getRow(i, board)
       row = mergeCells(row, direction)
       row = collapseCells(row, direction)
-      setRow(row, i , newBoard)
+      setRow(row, i, newBoard)
+    else if direction is 'up' or direction is 'down'
+      column = getCol(i, board)
+      column = mergeCells(column, direction)
+      column = collapseCells(column, direction)
+      setCol(column, i, newBoard)
 
   newBoard
 
@@ -36,34 +41,40 @@ getRow = (r, board) ->
 setRow = (row, index, board) ->
   board[index] = row
 
-mergeCells = (row, direction) ->
+getCol = (c, board) ->
+  [board[0][c], board[1][c],board[2][c], board[3][c]]
 
-  merge = (row) ->
+setCol = (col, index, board) ->
+  for i in [0..3]
+    board[i][index] = col[i]
+
+mergeCells = (cell, direction) ->
+
+  merge = (cell) ->
     for a in [3...0]
       for b in [a-1..0]
 
-        if row[a] is 0 then break
-        else if row[a] == row[b]
-          row[a] *= 2
-          row[b] = 0
+        if cell[a] is 0 then break
+        else if cell[a] == cell[b]
+          cell[a] *= 2
+          cell[b] = 0
           break
-        else if row[b] isnt 0 then break
-    row
+        else if cell[b] isnt 0 then break
+    cell
 
-  if direction is 'right'
-    merge row
-  else if direction is 'left'
-    merge(row.reverse()).reverse()
+  if direction is 'right' or direction is 'down'
+    merge cell
+  else if direction is 'left' or direction is 'up'
+    merge(cell.reverse()).reverse()
 
-collapseCells = (row, direction) ->
-  row = row.filter (ele) -> ele isnt 0
-  if direction is 'right'
-    while row.length < 4
-      row.unshift 0
-  else if direction is 'left'
-    while row.length < 4
-      row.push 0
-  row
+collapseCells = (cell, direction) ->
+  cell = cell.filter (ele) -> ele isnt 0
+  while cell.length < 4
+    if direction is 'right' or direction is 'down'
+      cell.unshift 0
+    else if direction is 'left' or direction is 'up'
+      cell.push 0
+  cell
 
 moveIsValid = (originalBoard, newBoard) ->
   for row in [0..3]
@@ -79,7 +90,6 @@ boardIsFull = (board) ->
   true
 
 noValidMove = (board) ->
-  direction = 'right' #FIXME: Handle other directions
   newBoard = move(board, direction)
   if moveIsValid(board, newBoard)
     return false
@@ -139,7 +149,6 @@ $ ->
         else
           # show board
           showBoard(@board)
-
       else
         console.log "Invalid"
 
