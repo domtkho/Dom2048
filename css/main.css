@@ -3,6 +3,11 @@
   src: url("/fonts/ClearSans-Bold.ttf");
 }
 
+@font-face {
+  font-family: "StreetWise";
+  src: url("/fonts/StreetwiseBuddy.ttf");
+}
+
 body {
   background: #FAF8EF;
   font-family: "Clear Sans";
@@ -12,46 +17,63 @@ body {
 div.top-container {
   width: 472px;
   height: 80px;
-  /*background: red;*/
   margin: 100px auto 20px;
 }
 
-.top-container h1 {
-  font-size: 48px;
-  float: left;
+div.title {
+  width: 236px;
+  height: 80px;
   display: block;
+  float: left;
+  font-family: 'StreetWise';
+}
+
+div.title h1 {
+  font-size: 60px;
+  margin: 0;
+}
+
+div.dashboard {
+  width: 236px;
+  height: 80px;
+  display: block;
+  float: left;
+}
+
+.score-container,
+.moves-container {
+  width: 108px;
+  height: 80px;
+  border: 2px solid #A1283B;
+  border-radius: 15px;
+  display: block;
+  float: left;
+  margin-left: 10px
 }
 
 .score-container {
-  width: 180px;
-  height: 80px;
-  display: block;
-  float: right;
-  background: blue;
-  border-radius: 15px;
+  background: #FFCF40;
 }
 
-.score-container h2 {
+.moves-container {
+  background: #FF9F40;
+}
+
+.score-container h2,
+.moves-container h2 {
+  color: #FFF;
+  font-size: 24px;
   margin: 10px auto 0;
-  font-size: 18px;
-  color: #FFF;
 }
 
-.score-container h3 {
+.score-container h3,
+.moves-container h3 {
   width: 100%;
-  font-size: 18px;
   color: #FFF;
+  font-size: 24px;
   margin-top: 0;
 }
 
-div.moves {
-  width: 472px;
-  height: 90px;
-  background: #009ACE;
-  border: 2px solid #5D5D5D;
-  border-radius: 10px;
-  margin: 20px auto;
-}
 
 div.board {
   width: 472px;
@@ -74,8 +96,11 @@ div.cell {
 }
 
 div.tile {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
   color: #FF9F40;
-  margin-top: 30px;
+  padding-top: 30px;
 }
 button.reset {
   width: 472px;

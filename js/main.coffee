@@ -1,3 +1,6 @@
+@score = 0
+@moves = 0
+
 randomInt = (x) ->
   Math.floor(Math.random() * x)
 
@@ -50,7 +53,7 @@ setCol = (col, index, board) ->
 
 mergeCells = (cells, direction) =>
 
-  merge = (cells) =>
+  merge = (cells) ->
     for a in [3...0]
       for b in [a-1..0]
 
@@ -58,6 +61,7 @@ mergeCells = (cells, direction) =>
         else if cells[a] == cells[b]
           cells[a] *= 2
           cells[b] = 0
+          updateScore(@score += cells[a])
           break
         else if cells[b] isnt 0 then break
     cells
@@ -81,7 +85,9 @@ moveIsValid = (originalBoard, newBoard) ->
   for row in [0..3]
     for col in [0..3]
       if originalBoard[row][col] isnt newBoard[row][col]
+        updateMoves(@moves++)
         return true
+
   false
 
 boardIsFull = (board) ->
@@ -104,9 +110,10 @@ showBoard = (board) ->
   for row in [0..3]
     for col in [0..3]
       if board[row][col] is 0
-        $(".r#{row}.c#{col} > div").html("")
+        $(".r#{row}.c#{col} > div").html("").css("background", "#6D7D8D")
       else
-        $(".r#{row}.c#{col} > div").html(board[row][col])
+        $(".r#{row}.c#{col} > div").html(board[row][col]).css("background", "#3D2040")
+
 
 printArray = (array) ->
   console.log "--- Start ---"
@@ -117,14 +124,21 @@ printArray = (array) ->
 resetToZero = ->
   0
 
-addMoves = (currentMoves, toAdd) ->
-  currentMoves += toAdd
-  $('h3.moves').html(currentMoves)
-  currentMoves
+updateMoves = ->
+  $('h3.moves').html(@moves)
+
+updateScore = ->
+  $('h3.score').html(@score)
+
+resetGame = (board) ->
+  @moves = resetToZero()
+  updateMoves()
+  @score = resetToZero()
+  updateScore()
+  board = buildBoard()
 
 
 $ ->
-  @moves = resetToZero()
   @board = buildBoard()
   generateTile(@board)
   generateTile(@board)
@@ -151,7 +165,6 @@ $ ->
       if moveIsValid(@board, newBoard)
         console.log "Valid"
         @board = newBoard
-        @moves = addMoves(@moves, 1)
         # generate tile
         generateTile(@board)
         showBoard(@board)
@@ -164,9 +177,13 @@ $ ->
 
       else
         console.log "Invalid"
-
-
       # check move validity, by comparing the original and new board
+
+  $('button.reset').click =>
+    @board = resetGame(@board)
+    generateTile(@board)
+    generateTile(@board)
+    showBoard(@board)
 
 
 
