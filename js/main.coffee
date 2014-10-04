@@ -19,7 +19,7 @@ generateTile = (board) ->
   else
     generateTile(board)
 
-move = (board, direction) ->
+move = (board, direction) =>
   newBoard = buildBoard()
   for i in [0..3]
     if direction in ['right', 'left']
@@ -48,24 +48,25 @@ setCol = (col, index, board) ->
   for i in [0..3]
     board[i][index] = col[i]
 
-mergeCells = (cell, direction) ->
+mergeCells = (cells, direction) =>
 
-  merge = (cell) ->
+  merge = (cells) =>
     for a in [3...0]
       for b in [a-1..0]
 
-        if cell[a] is 0 then break
-        else if cell[a] == cell[b]
-          cell[a] *= 2
-          cell[b] = 0
+        if cells[a] is 0 then break
+        else if cells[a] == cells[b]
+          cells[a] *= 2
+          cells[b] = 0
           break
-        else if cell[b] isnt 0 then break
-    cell
+        else if cells[b] isnt 0 then break
+    cells
 
   if direction in ['right', 'down']
-    merge cell
+    merge cells
   else if direction in ['left', 'up']
-    merge(cell.reverse()).reverse()
+    merge(cells.reverse()).reverse()
+
 
 collapseCells = (cell, direction) ->
   cell = cell.filter (ele) -> ele isnt 0
@@ -113,8 +114,17 @@ printArray = (array) ->
     console.log row
   console.log "--- End ---"
 
+resetToZero = ->
+  0
+
+addMoves = (currentMoves, toAdd) ->
+  currentMoves += toAdd
+  $('h3.moves').html(currentMoves)
+  currentMoves
+
 
 $ ->
+  @moves = resetToZero()
   @board = buildBoard()
   generateTile(@board)
   generateTile(@board)
@@ -141,6 +151,7 @@ $ ->
       if moveIsValid(@board, newBoard)
         console.log "Valid"
         @board = newBoard
+        @moves = addMoves(@moves, 1)
         # generate tile
         generateTile(@board)
         showBoard(@board)

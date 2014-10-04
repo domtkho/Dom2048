@@ -9,6 +9,50 @@ body {
   text-align: center;
 }
 
+div.top-container {
+  width: 472px;
+  height: 80px;
+  /*background: red;*/
+  margin: 100px auto 20px;
+}
+
+.top-container h1 {
+  font-size: 48px;
+  float: left;
+  display: block;
+}
+
+.score-container {
+  width: 180px;
+  height: 80px;
+  display: block;
+  float: right;
+  background: blue;
+  border-radius: 15px;
+}
+
+.score-container h2 {
+  margin: 10px auto 0;
+  font-size: 18px;
+  color: #FFF;
+}
+
+.score-container h3 {
+  width: 100%;
+  font-size: 18px;
+  color: #FFF;
+  margin-top: 0;
+}
+
+div.moves {
+  width: 472px;
+  height: 90px;
+  background: #009ACE;
+  border: 2px solid #5D5D5D;
+  border-radius: 10px;
+  margin: 20px auto;
+}
+
 div.board {
   width: 472px;
   height: 472px;
@@ -32,4 +76,10 @@ div.cell {
 div.tile {
   color: #FF9F40;
   margin-top: 30px;
+}
+button.reset {
+  width: 472px;
+  height: 60px;
+  font-size: 24px;
+  margin-top: 20px;
 }

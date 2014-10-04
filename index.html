@@ -7,26 +7,36 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-  <h1>Dom's 2048</h1>
-  <div>
-    <div class="board">
-      <div class="cell r0 c0"><div class="tile"></div></div>
-      <div class="cell r0 c1"><div class="tile"></div></div>
-      <div class="cell r0 c2"><div class="tile"></div></div>
-      <div class="cell r0 c3"><div class="tile"></div></div>
-      <div class="cell r1 c0"><div class="tile"></div></div>
-      <div class="cell r1 c1"><div class="tile"></div></div>
-      <div class="cell r1 c2"><div class="tile"></div></div>
-      <div class="cell r1 c3"><div class="tile"></div></div>
-      <div class="cell r2 c0"><div class="tile"></div></div>
-      <div class="cell r2 c1"><div class="tile"></div></div>
-      <div class="cell r2 c2"><div class="tile"></div></div>
-      <div class="cell r2 c3"><div class="tile"></div></div>
-      <div class="cell r3 c0"><div class="tile"></div></div>
-      <div class="cell r3 c1"><div class="tile"></div></div>
-      <div class="cell r3 c2"><div class="tile"></div></div>
-      <div class="cell r3 c3"><div class="tile"></div></div>
+  <div class="container">
+    <div class="top-container">
+      <h1>Dom's 2048</h1>
+      <div class="score-container">
+        <h2>Moves:</h2>
+        <h3 class="moves">0</h3>
+      </div>
     </div>
+
+    <div>
+      <div class="board">
+        <div class="cell r0 c0"><div class="tile"></div></div>
+        <div class="cell r0 c1"><div class="tile"></div></div>
+        <div class="cell r0 c2"><div class="tile"></div></div>
+        <div class="cell r0 c3"><div class="tile"></div></div>
+        <div class="cell r1 c0"><div class="tile"></div></div>
+        <div class="cell r1 c1"><div class="tile"></div></div>
+        <div class="cell r1 c2"><div class="tile"></div></div>
+        <div class="cell r1 c3"><div class="tile"></div></div>
+        <div class="cell r2 c0"><div class="tile"></div></div>
+        <div class="cell r2 c1"><div class="tile"></div></div>
+        <div class="cell r2 c2"><div class="tile"></div></div>
+        <div class="cell r2 c3"><div class="tile"></div></div>
+        <div class="cell r3 c0"><div class="tile"></div></div>
+        <div class="cell r3 c1"><div class="tile"></div></div>
+        <div class="cell r3 c2"><div class="tile"></div></div>
+        <div class="cell r3 c3"><div class="tile"></div></div>
+      </div>
+    </div>
+    <button class="btn btn-success reset">Reset Game</button>
   </div>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
