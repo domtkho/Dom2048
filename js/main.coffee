@@ -147,6 +147,8 @@ resetGame = (board) ->
   updateMoves()
   @score = resetToZero()
   updateScore()
+  $('.gameOver').remove()
+  $('.gameOverShade').remove()
   board = buildBoard()
 
 animateTileGeneration = (row, column) ->
@@ -154,6 +156,10 @@ animateTileGeneration = (row, column) ->
     position: 'relative', left: '50px', top: '50px', height: '0', width: '0'
   }).animate({
     height: '100%', width: '100%',left: '0', top: '0'}, 150)    # To fix animation
+
+gameOver = ->
+  $('.gameContainer').append('<div class="gameOver"><p>Game Over</div>')
+  $('.board').append('<div class="gameOverShade"></div>')
 
 
 $ ->
@@ -188,7 +194,7 @@ $ ->
         showBoard(@board)
         #check game lost
         if isGameOver(@board)
-          console.log "Game Over!"
+          gameOver()
         else
           # show board
           showBoard(@board)

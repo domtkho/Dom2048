@@ -14,10 +14,14 @@ body {
   text-align: center;
 }
 
+div.container {
+  width: 502px;
+}
+
 div.top-container {
   width: 472px;
   height: 80px;
-  margin: 100px auto 20px;
+  margin: 80px auto 20px;
 }
 
 div.title {
@@ -74,6 +78,11 @@ div.dashboard {
   margin-top: 0;
 }
 
+div.gameContainer {
+  position: relative;
+  width: 472px;
+  height: 472px;
+}
 
 div.board {
   width: 472px;
@@ -82,6 +91,9 @@ div.board {
   border-radius: 10px;
   margin: 0 auto;
   padding: 8px;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 div.cell {
@@ -108,4 +120,26 @@ button.reset {
   height: 60px;
   font-size: 24px;
   margin-top: 20px;
+}
+
+.gameContainer div.gameOverShade {
+  width: 472px;
+  height: 472px;
+  background: rgba(255,255,255,0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 50;
+
+}
+
+div.gameOver {
+  width: 272px;
+  height: 100px;
+  top: 151px;
+  left: 100px;
+  font-family: 'StreetWise';
+  font-size: 60px;
+  position: absolute;
+  z-index: 100;
 }
