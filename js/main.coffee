@@ -166,7 +166,7 @@ gameOver = ->
 # stayAsQuestionMark = (oldBoard, newBoard) ->
 #   for row in oldBoard
 #     for col in row
-#       if (oldBoard[row][col] is newBoard[row][col]) and $('#{oldBoard}[#{row}][#{col}]').hasClass('questionMark')
+#       if ($([row][col]).html() == "?") and (newBoard[row][col]).html() == "?")
 #         $(@).addClass('tile questionMark')
 
 
@@ -195,20 +195,22 @@ $ ->
       newBoard = move(@board, direction)
       # check the move validity, by comparing the original and new board
       if moveIsValid(@board, newBoard)
+        # stayAsQuestionMark(@board, newBoard)
         @board = newBoard
         # generate tile
         # deQueueAnimation(@board)
         generateTile(@board)
         showBoard(@board)
 
-        clearTimeout(@timeoutID)
-        @timeoutID = setTimeout(=>
-          changeTilesToQuestionMark(@board)
-        , 5000)
-
         #check game lost
         if isGameOver(@board)
+          clearTimeout(@timeoutID)
           gameOver()
+        else
+          clearTimeout(@timeoutID)
+          @timeoutID = setTimeout(=>
+            changeTilesToQuestionMark(@board)
+          , 500)
 
       else
         console.log "Invalid"
