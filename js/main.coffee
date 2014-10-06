@@ -36,7 +36,6 @@ move = (board, direction) =>
       column = mergeCells(column, direction)
       column = collapseCells(column, direction)
       setCol(column, i, newBoard)
-
   newBoard
 
 getRow = (r, board) ->
@@ -110,22 +109,21 @@ isGameOver = (board) ->
 showBoard = (board) ->
   for row in [0..3]
     for col in [0..3]
-      switch board[row][col]
-        when 0 then $(".r#{row}.c#{col} > div").html("").css("background", "#6D7D8D")
-        when 2 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#139ACC", color: "#FFFFFF"})
-        when 4 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#FFF54A", color: "#5D5D5D"})
-        when 8 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#FF315E", color: "#FFFFFF"})
-        when 16 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#B28992", color: "#FFFFFF"})
-        when 32 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#D6FFDE", color: "#5D5D5D"})
-        when 64 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#B29F88", color: "#FFFFFF"})
-        when 128 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#CC415D", color: "#FFFFFF"})
-        when 256 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#B2B2A1", color: "#FFFFFF"})
-        when 512 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#FFB324", color: "#5D5D5D"})
-        when 1024 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#3FCC83", color: "#FFFFFF"})
-        when 2048 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#3D2040", color: "#FFFFFF"})
-        when 4096 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#F13D00", color: "#FFFFFF"})
-        when 8192 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#274514", color: "#FFFFFF"})
-        when 16384 then $(".r#{row}.c#{col} > div").html(board[row][col]).css({background: "#00135E", color: "#FFFFFF"})
+      cell = board[row][col]
+
+      if cell is 0
+        $(".r#{row}.c#{col} > div").html("").removeClass().addClass("tile tile0")
+      else
+        $(".r#{row}.c#{col} > div").html(cell).removeClass().addClass("tile#{cell} tile")
+
+
+changeTilesToQuestionMark = (board) ->
+  for row in [0..3]
+    for col in [0..3]
+      cell = board[row][col]
+
+      if cell isnt 0
+        $(".r#{row}.c#{col} > div").removeClass().addClass("tile").addClass("questionMark").html("?")
 
 printArray = (array) ->
   console.log "--- Start ---"
@@ -153,21 +151,33 @@ resetGame = (board) ->
 
 animateTileGeneration = (row, column) ->
   $(".r#{row}.c#{column} > .tile").css({
-    position: 'relative', left: '50px', top: '50px', height: '0', width: '0'
-  }).animate({
-    height: '100%', width: '100%',left: '0', top: '0'}, 150)    # To fix animation
+    position: 'absolute', left: '50px', top: '50px', transform: 'scale(.01)'
+  })
+  setTimeout(->
+    $(".r#{row}.c#{column} > .tile").css({
+      left: '0', top: '0', transform: 'scale(1)'
+    });
+  , 150);
 
 gameOver = ->
   $('.gameContainer').append('<div class="gameOver"><p>Game Over</div>')
   $('.board').append('<div class="gameOverShade"></div>')
+
+# stayAsQuestionMark = (oldBoard, newBoard) ->
+#   for row in oldBoard
+#     for col in row
+#       if (oldBoard[row][col] is newBoard[row][col]) and $('#{oldBoard}[#{row}][#{col}]').hasClass('questionMark')
+#         $(@).addClass('tile questionMark')
+
 
 
 $ ->
   @board = buildBoard()
   generateTile(@board)
   generateTile(@board)
-  # printArray(@board)
   showBoard(@board)
+
+  @timeoutID = undefined
 
   $('body').keydown (e) =>
     key = e.which
@@ -180,24 +190,25 @@ $ ->
         when 38 then 'up'
         when 39 then 'right'
         when 40 then 'down'
-      # console.log direction
 
       # try moving
       newBoard = move(@board, direction)
-      # printArray newBoard
       # check the move validity, by comparing the original and new board
       if moveIsValid(@board, newBoard)
-        # console.log "Valid"
         @board = newBoard
         # generate tile
+        # deQueueAnimation(@board)
         generateTile(@board)
         showBoard(@board)
+
+        clearTimeout(@timeoutID)
+        @timeoutID = setTimeout(=>
+          changeTilesToQuestionMark(@board)
+        , 5000)
+
         #check game lost
         if isGameOver(@board)
           gameOver()
-        else
-          # show board
-          showBoard(@board)
 
       else
         console.log "Invalid"
