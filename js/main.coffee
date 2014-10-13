@@ -123,7 +123,7 @@ changeTilesToQuestionMark = (board) ->
       cell = board[row][col]
 
       if cell isnt 0
-        $(".r#{row}.c#{col} > div").removeClass().addClass("tile").addClass("questionMark").html("?")
+        $(".r#{row}.c#{col} > div").removeClass().addClass("tile questionMark").html("?")
 
 printArray = (array) ->
   console.log "--- Start ---"
@@ -162,12 +162,6 @@ animateTileGeneration = (row, column) ->
 gameOver = ->
   $('.gameContainer').append('<div class="gameOver"><p>Game Over</div>')
   $('.board').append('<div class="gameOverShade"></div>')
-
-# stayAsQuestionMark = (oldBoard, newBoard) ->
-#   for row in oldBoard
-#     for col in row
-#       if ($([row][col]).html() == "?") and (newBoard[row][col]).html() == "?")
-#         $(@).addClass('tile questionMark')
 
 
 
@@ -210,7 +204,7 @@ $ ->
           clearTimeout(@timeoutID)
           @timeoutID = setTimeout(=>
             changeTilesToQuestionMark(@board)
-          , 500)
+          , 300)
 
       else
         console.log "Invalid"

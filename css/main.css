@@ -20,8 +20,8 @@ div.container {
 
 div.top-container {
   width: 472px;
-  height: 80px;
-  margin: 80px auto 20px;
+  height: 100px;
+  margin: 60px auto 0;
 }
 
 div.title {
@@ -35,6 +35,14 @@ div.title {
 div.title h1 {
   font-size: 60px;
   margin: 0;
+}
+
+div.instructions h2 {
+  color: #009ACE;
+  font-size: 20px;
+  font-family: 'StreetWise';
+  margin-top: 0;
+  margin-bottom: 20px;
 }
 
 div.dashboard {
@@ -148,11 +156,6 @@ div.gameOver {
   position: absolute;
   z-index: 100;
 }
-
-.maskedTile {
-  background: #000;
-}
-
 
 
 /***********/
